@@ -16,4 +16,5 @@ public class VehicleManagement {
         vehicles.setPrefSize(400, 250);
         vehicles.setStyle(defaultCSS);
     }
+
 }

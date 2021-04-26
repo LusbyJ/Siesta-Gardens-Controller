@@ -1,8 +1,11 @@
 package sgc;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -24,13 +27,14 @@ import java.util.ArrayList;
 public class CentralManagement extends Application {
     public static BorderPane adminView;        //View the admin would have
     public static FlowPane combine;
-    public static FlowPane kiosk;
+    public static BorderPane kiosk;
     public static FlowPane vehicles;
     public static Pane parkMap;
     public static FlowPane visitorLog;
     public static FlowPane alarmMonitor;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
     public final String defaultCSS = "-fx-background-color: #404040;"+"-fx-border-color: white;";
+
 
     /**
      * Create a border pane for all components to fit into
@@ -54,7 +58,7 @@ public class CentralManagement extends Application {
         adminView.setLeft(parkMap);
         adminView.setRight(combine);
 
-        kiosk.getChildren().add(createMessage("Welcome to Siesta Gardens", 0));
+        kiosk.getChildren().add(createMessage("\n\t\tWelcome to Siesta Gardens",3));
         vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
         alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
@@ -73,6 +77,9 @@ public class CentralManagement extends Application {
         }
         else if(color == 2){
             newLog.setStroke(Color.RED);
+        }
+        else if(color == 3){
+            newLog.setStroke(Color.GREEN);
         }
         else newLog.setStroke(Color.BLACK);
         return newLog;
