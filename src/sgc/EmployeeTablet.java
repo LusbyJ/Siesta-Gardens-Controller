@@ -5,22 +5,25 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 // This class handles running the employee tablet simulation
 public class EmployeeTablet{
-    private Stage tabletStage;
     private Scene menuScene;
-    private Scene locatorScene;
-    private Scene routeOverrideScene;
-    private Scene emergencyScene;
+    private BorderPane menuPane;
+    private BorderPane locatorPane;
+    private BorderPane routeOverridePane;
+    private BorderPane emergencyPane;
 
     public void initializeTablet(Stage primaryStage){
-        tabletStage = new Stage();
+        Stage tabletStage = new Stage();
         tabletStage.initModality(Modality.NONE);
         tabletStage.initOwner(primaryStage);
         tabletStage.setAlwaysOnTop(false);
@@ -35,6 +38,9 @@ public class EmployeeTablet{
         locatorGC.fillRect(0, 0, 210, 210);
         locatorGC.drawImage(locatorIcon, 5, 5);
         locatorGC.strokeRoundRect(0, 0, 210, 210, 20, 20);
+        locatorCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            menuScene.setRoot(locatorPane);
+        });
 
         Canvas routeOverrideCanvas = new Canvas(210, 210);
         GraphicsContext routeOverrideGC = routeOverrideCanvas.getGraphicsContext2D();
@@ -64,9 +70,43 @@ public class EmployeeTablet{
         border.setBackground(new Background(new BackgroundFill(
                 Color.LIGHTGREEN, new CornerRadii(10), new Insets(0))));
         border.setCenter(hBox);
+        menuPane = border;
+
+        initializeLocator();
 
         menuScene = new Scene(border, 800, 500);
         tabletStage.setScene(menuScene);
         tabletStage.show();
+    }
+
+    private void initializeLocator(){
+        BorderPane border = new BorderPane();
+        BorderPane buttonPane = new BorderPane();
+        //LocationMap map = new LocationMap();
+        Button scan = new Button("Scan Tokens");
+        Button back = new Button("Back");
+        Canvas scanCanvas = new Canvas(600, 500);
+        GraphicsContext gc = scanCanvas.getGraphicsContext2D();
+
+        gc.setFill(Color.LIGHTGRAY);
+        gc.fillRect(0, 0, 600, 500);
+        gc.strokeText("Scan Token Now", 250, 150);
+
+        scan.setFont(new Font(20));
+
+        back.setFont(new Font(20));
+        back.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            menuScene.setRoot(menuPane);
+        });
+
+        buttonPane.setTop(back);
+        buttonPane.setBottom(scan);
+        BorderPane.setAlignment(buttonPane, Pos.CENTER);
+
+        BorderPane.setAlignment(border, Pos.CENTER);
+        border.setCenter(LocationMap.parkMap);
+        border.setRight(buttonPane);
+
+        locatorPane = border;
     }
 }
