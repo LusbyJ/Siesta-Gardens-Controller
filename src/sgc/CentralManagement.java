@@ -6,8 +6,10 @@ import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
@@ -25,12 +27,14 @@ import java.util.ArrayList;
  * Driver class to create all objects and initialize the GUI
  */
 public class CentralManagement extends Application {
+    private Stage pStage;
     public static BorderPane adminView;        //View the admin would have
     public static FlowPane combine;
     public static BorderPane kiosk;
     public static FlowPane vehicles;
     public static Pane parkMap;
     public static FlowPane visitorLog;
+    public static HBox topPane;
     public static FlowPane alarmMonitor;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
     public final String defaultCSS = "-fx-background-color: #404040;"+"-fx-border-color: white;";
@@ -51,10 +55,17 @@ public class CentralManagement extends Application {
         combine.setPrefSize(400,500);
         combine.getChildren().addAll(kiosk,vehicles);
 
+        Button tabletButton = new Button("Tablet");
+        tabletButton.addEventHandler(MouseEvent.MOUSE_CLICKED, event ->{
+            EmployeeTablet tablet = new EmployeeTablet();
+            tablet.initializeTablet(pStage);
+        });
+        topPane = new HBox(alarmMonitor, tabletButton);
+
         adminView = new BorderPane();
         adminView.setPrefSize(1000,800);
         adminView.setBottom(visitorLog);
-        adminView.setTop(alarmMonitor);
+        adminView.setTop(topPane);
         adminView.setLeft(parkMap);
         adminView.setRight(combine);
 
@@ -139,6 +150,7 @@ public class CentralManagement extends Application {
      */
     public void start(Stage primaryStage) throws Exception{
         primaryStage.setTitle("Siesta Gardens Controller");
+        pStage = primaryStage;
         CentralManagement view = new CentralManagement();
         Group root = new Group(view.createAdminView());
         Scene scene = new Scene(root, 1000, 800);
