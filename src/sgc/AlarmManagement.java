@@ -8,6 +8,7 @@ import javafx.scene.layout.FlowPane;
 public class AlarmManagement {
     public FlowPane alarmMonitor;       //Place to monitor alarms
     public final String defaultCSS = "-fx-background-color: #404040;"+"-fx-border-color: white;";
+
     /**
      * Create a pane to monitor the alarm system
      */

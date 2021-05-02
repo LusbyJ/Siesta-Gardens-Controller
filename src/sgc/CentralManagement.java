@@ -33,8 +33,6 @@ public class CentralManagement extends Application {
     public static FlowPane visitorLog;
     public static FlowPane alarmMonitor;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
-    public final String defaultCSS = "-fx-background-color: #404040;"+"-fx-border-color: white;";
-
 
     /**
      * Create a border pane for all components to fit into
@@ -44,6 +42,7 @@ public class CentralManagement extends Application {
         vehicles = new VehicleManagement().vehicles;
         parkMap = new LocationMap().parkMap;
         readMap();
+
         visitorLog = new TokenManagement().visitorLog;
         alarmMonitor = new AlarmManagement().alarmMonitor;
         combine = new FlowPane();
@@ -58,7 +57,7 @@ public class CentralManagement extends Application {
         adminView.setLeft(parkMap);
         adminView.setRight(combine);
 
-        kiosk.getChildren().add(createMessage("\n\t\tWelcome to Siesta Gardens",3));
+
         vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
         alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
