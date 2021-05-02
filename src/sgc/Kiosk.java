@@ -2,7 +2,10 @@ package sgc;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 
 /**
  * Class to create and manage the kiosk
@@ -53,7 +56,7 @@ public class Kiosk {
             public void handle(ActionEvent event) {
                 kioskDisplay.getChildren().remove(0);
                 for(char i=48; i<57;i++) {
-                    kioskDisplay.getChildren().add(new CentralManagement().createMessage(i+":00  ", 3));
+                    kioskDisplay.getChildren().add(createMessage(i+":00  "));
                 }
             }
         });
@@ -119,5 +122,17 @@ public class Kiosk {
             }
         });
         return cancelButton;
+    }
+    /**
+     * Creates a Text object with a specified color to be used on GUI
+     * @param text : info String
+     */
+    public Text createMessage(String text){
+        Text newLog = new Text(text);
+        newLog.setStroke(Color.GREEN);
+        newLog.setOnMouseClicked((EventHandler<MouseEvent>) event -> {
+            newLog.setStroke(Color.WHITE);
+        });
+        return newLog;
     }
 }
