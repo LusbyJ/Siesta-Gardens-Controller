@@ -2,6 +2,7 @@ package sgc;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -54,8 +55,9 @@ public class Kiosk {
         bookingButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                kioskDisplay.getChildren().remove(0);
-                for(char i=48; i<57;i++) {
+                kioskDisplay.getChildren().clear();
+                kioskDisplay.getChildren().add(createMessage("\t\t\t\tAvailable Times\t\t\t\t"));
+                for(char i=49; i<58;i++) {
                     kioskDisplay.getChildren().add(createMessage(i+":00  "));
                 }
             }
@@ -78,6 +80,9 @@ public class Kiosk {
             @Override
             public void handle(ActionEvent event) {
                 //book time slot
+                TextField b = new TextField();
+                kioskDisplay.getChildren().clear();
+                kioskDisplay.getChildren().add(b);
             }
         });
         return selectButton;
@@ -118,6 +123,8 @@ public class Kiosk {
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                kioskDisplay.getChildren().clear();
+                kioskDisplay.getChildren().add(createMessage("\n\t\t\tWelcome to Siesta Gardens"));
 
             }
         });
