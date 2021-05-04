@@ -9,7 +9,7 @@ public class VehicleManagement {
     public final String defaultCSS = "-fx-background-color: #404040;"+"-fx-border-color: white;";
 
     /**
-     * Create vehicle management object
+     * Create vehicle management object pane
      */
     public VehicleManagement() {
         vehicles = new FlowPane();

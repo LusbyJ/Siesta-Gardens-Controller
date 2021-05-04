@@ -57,7 +57,6 @@ public class CentralManagement extends Application {
         adminView.setLeft(parkMap);
         adminView.setRight(combine);
 
-
         vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
         alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
@@ -94,11 +93,11 @@ public class CentralManagement extends Application {
         String st;
 
         //Loop through each line of the input file
+        //Store each coordinate into the points array list
         while((st = br.readLine()) != null){
             Edge edge = new Edge((int)st.charAt(0)-48,(int)st.charAt(2)-48,
-                    (int)st.charAt(4)-48, (int)st.charAt(6)-48);
+                                (int)st.charAt(4)-48, (int)st.charAt(6)-48);
             createLine(edge);
-            //add point to array list
             points.add(createPoint((int)st.charAt(0)-48, (int)st.charAt(2)-48));
         }
     }
@@ -126,6 +125,7 @@ public class CentralManagement extends Application {
      * @return new 2D point
      */
     public Point2D createPoint(int xValue, int yValue) {
+        //uses 80 as a scaler to position map better in pane
         int x = xValue*80;
         int y = yValue*80;
         return new Point2D(x,y);
