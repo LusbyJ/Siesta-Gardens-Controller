@@ -24,6 +24,8 @@ public class EmployeeTablet{
     private GraphicsContext overrideGC;
     private boolean scanActive;
     private boolean overrideActive;
+    private boolean emergencyAppOpen;
+    private boolean emergencyActive;
 
     public void initializeTablet(Stage primaryStage){
         Stage tabletStage = new Stage();
@@ -67,6 +69,10 @@ public class EmployeeTablet{
         emergencyGC.fillRect(0, 0, 210, 210);
         emergencyGC.drawImage(emergencyIcon, 5, 5);
         emergencyGC.strokeRoundRect(0, 0, 210, 210, 20, 20);
+        emergencyCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            menuScene.setRoot(emergencyPane);
+            emergencyAppOpen = true;
+        });
 
         HBox hBox = new HBox(15);
         hBox.setAlignment(Pos.CENTER);
@@ -80,6 +86,7 @@ public class EmployeeTablet{
 
         initializeLocator();
         initializeRouteOverride();
+        initializeEmergency();
 
         menuScene = new Scene(border, 800, 500);
         tabletStage.setScene(menuScene);
@@ -187,5 +194,54 @@ public class EmployeeTablet{
         border.setRight(buttonPane);
 
         routeOverridePane = border;
+    }
+
+    private void initializeEmergency(){
+        BorderPane border = new BorderPane();
+        Button back = new Button("Back");
+        Canvas emergencyCanvas = new Canvas(700, 500);
+        GraphicsContext gc = emergencyCanvas.getGraphicsContext2D();
+        emergencyAppOpen = false;
+        emergencyActive = false;
+
+        gc.setFont(new Font(50));
+        gc.setFill(Color.MISTYROSE);
+        gc.fillRect(0, 0, 700, 500);
+        gc.setFill(Color.RED);
+        gc.fillOval(200, 100, 300, 300);
+        gc.setLineWidth(10);
+        gc.strokeOval(200, 100, 300, 300);
+        gc.setFill(Color.BLACK);
+        gc.fillText("EMERGENCY", 210, 260);
+
+        emergencyCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(emergencyActive){
+                gc.setFill(Color.MISTYROSE);
+                emergencyActive = false;
+            }
+            else{
+                gc.setFill(Color.TOMATO);
+                emergencyActive = true;
+            }
+            gc.fillRect(0, 0, 700, 500);
+            gc.setFill(Color.RED);
+            gc.fillOval(200, 100, 300, 300);
+            gc.setLineWidth(10);
+            gc.strokeOval(200, 100, 300, 300);
+            gc.setFill(Color.BLACK);
+            gc.fillText("EMERGENCY", 210, 260);
+        });
+
+        back.setFont(new Font(20));
+        back.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            menuScene.setRoot(menuPane);
+            emergencyAppOpen = false;
+        });
+
+        BorderPane.setAlignment(border, Pos.CENTER_LEFT);
+        border.setCenter(emergencyCanvas);
+        border.setRight(back);
+
+        emergencyPane = border;
     }
 }
