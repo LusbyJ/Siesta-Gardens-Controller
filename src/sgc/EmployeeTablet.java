@@ -21,6 +21,7 @@ public class EmployeeTablet{
     private BorderPane locatorPane;
     private BorderPane routeOverridePane;
     private BorderPane emergencyPane;
+    private boolean scanActive;
 
     public void initializeTablet(Stage primaryStage){
         Stage tabletStage = new Stage();
@@ -82,28 +83,46 @@ public class EmployeeTablet{
     private void initializeLocator(){
         BorderPane border = new BorderPane();
         BorderPane buttonPane = new BorderPane();
-        //LocationMap map = new LocationMap();
         Button scan = new Button("Scan Tokens");
         Button back = new Button("Back");
         Canvas scanCanvas = new Canvas(600, 500);
         GraphicsContext gc = scanCanvas.getGraphicsContext2D();
+
+        scanActive = false;
 
         gc.setFill(Color.LIGHTGRAY);
         gc.fillRect(0, 0, 600, 500);
         gc.strokeText("Scan Token Now", 250, 150);
 
         scan.setFont(new Font(20));
+        scan.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(scanActive){
+                scan.setText("Scan Token Now");
+                border.setCenter(LocationMap.parkMap);
+                scanActive = false;
+            }
+            else{
+                scan.setText("Stop Scan");
+                border.setCenter(scanCanvas);
+                scanActive = true;
+            }
+        });
 
         back.setFont(new Font(20));
         back.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             menuScene.setRoot(menuPane);
+            if(scanActive){
+                scan.setText("Scan Token Now");
+                border.setCenter(LocationMap.parkMap);
+                scanActive = false;
+            }
         });
 
         buttonPane.setTop(back);
         buttonPane.setBottom(scan);
-        BorderPane.setAlignment(buttonPane, Pos.CENTER);
+        BorderPane.setAlignment(buttonPane, Pos.CENTER_LEFT);
 
-        BorderPane.setAlignment(border, Pos.CENTER);
+        BorderPane.setAlignment(border, Pos.CENTER_LEFT);
         border.setCenter(LocationMap.parkMap);
         border.setRight(buttonPane);
 
