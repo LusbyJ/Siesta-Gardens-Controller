@@ -21,7 +21,9 @@ public class EmployeeTablet{
     private BorderPane locatorPane;
     private BorderPane routeOverridePane;
     private BorderPane emergencyPane;
+    private GraphicsContext overrideGC;
     private boolean scanActive;
+    private boolean overrideActive;
 
     public void initializeTablet(Stage primaryStage){
         Stage tabletStage = new Stage();
@@ -52,6 +54,9 @@ public class EmployeeTablet{
         routeOverrideGC.fillRect(0, 0, 210, 210);
         routeOverrideGC.drawImage(routeOverrideIcon, 5, 5);
         routeOverrideGC.strokeRoundRect(0, 0, 210, 210, 20, 20);
+        routeOverrideCanvas.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            menuScene.setRoot(routeOverridePane);
+        });
 
         Canvas emergencyCanvas = new Canvas(210, 210);
         GraphicsContext emergencyGC = emergencyCanvas.getGraphicsContext2D();
@@ -74,6 +79,7 @@ public class EmployeeTablet{
         menuPane = border;
 
         initializeLocator();
+        initializeRouteOverride();
 
         menuScene = new Scene(border, 800, 500);
         tabletStage.setScene(menuScene);
@@ -127,5 +133,59 @@ public class EmployeeTablet{
         border.setRight(buttonPane);
 
         locatorPane = border;
+    }
+
+    private void initializeRouteOverride(){
+        BorderPane border = new BorderPane();
+        BorderPane buttonPane = new BorderPane();
+        StackPane stack = new StackPane();
+        Button override = new Button("Override Route");
+        Button back = new Button("Back");
+        Canvas overrideCanvas = new Canvas(600, 500);
+        overrideGC = overrideCanvas.getGraphicsContext2D();
+        overrideActive = false;
+
+        overrideGC.clearRect(0, 0, 600, 500);
+        overrideGC.setFill(Color.PERU);
+        stack.addEventHandler(MouseEvent.MOUSE_DRAGGED, event -> {
+            overrideGC.fillOval(event.getSceneX()-20, event.getSceneY(), 4, 4);
+        });
+
+        override.setFont(new Font(20));
+        override.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(overrideActive){
+                override.setText("Override Route");
+                overrideActive = false;
+            }
+            else{
+                override.setText("Confirm Route");
+                overrideActive = true;
+            }
+        });
+
+        back.setFont(new Font(20));
+        back.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(overrideActive){
+                override.setText("Override Route");
+                overrideActive = false;
+            }
+            else{
+                menuScene.setRoot(menuPane);
+            }
+            overrideGC.clearRect(0, 0, 600, 500);
+        });
+
+        buttonPane.setTop(back);
+        buttonPane.setBottom(override);
+        BorderPane.setAlignment(buttonPane, Pos.CENTER_LEFT);
+
+        stack.getChildren().add(LocationMap.parkMap);
+        stack.getChildren().add(overrideCanvas);
+
+        BorderPane.setAlignment(border, Pos.CENTER_LEFT);
+        border.setCenter(stack);
+        border.setRight(buttonPane);
+
+        routeOverridePane = border;
     }
 }
