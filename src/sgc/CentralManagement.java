@@ -1,4 +1,5 @@
 package sgc;
+import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -32,7 +33,12 @@ public class CentralManagement extends Application {
     public static Pane parkMap;
     public static FlowPane visitorLog;
     public static FlowPane alarmMonitor;
+    public AnimationTimer a;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
+    public static int i;
+    public static int j;
+    private static long time = 999_999_999*100;  // determines speed of animation
+    private static long lastUpdate = 0;
 
     /**
      * Create a border pane for all components to fit into
@@ -57,6 +63,7 @@ public class CentralManagement extends Application {
         adminView.setLeft(parkMap);
         adminView.setRight(combine);
 
+        parkMap.getChildren().add(createMessage("\nPark Map", 0));
         vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
         alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
@@ -132,6 +139,38 @@ public class CentralManagement extends Application {
     }
 
     /**
+     * Animation timer to move cars around the map
+     */
+    public void moveCars() {
+        i = 3;
+        j = 9;
+        a = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if (now - lastUpdate >= time) {
+                    lastUpdate = now;
+                    if (i < points.size()) {
+                        LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
+                        i++;
+                    }
+                    else{
+                        i = 0;
+                    }
+                    if(j < points.size()){
+                        LocationMap.car2.relocate(points.get(j).getX(), points.get(j).getY());
+                        j++;
+                    }
+                    else{
+                        j = 0;
+                    }
+
+                }
+            }
+        };
+        a.start();
+    }
+
+    /**
      * Set up the scene
      * @param primaryStage
      * @throws Exception
@@ -143,8 +182,6 @@ public class CentralManagement extends Application {
         Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
-        /*
-        TODO: call to run simulation
-         */
+        moveCars();
     }
 }

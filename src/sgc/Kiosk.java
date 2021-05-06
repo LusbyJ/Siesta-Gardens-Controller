@@ -7,7 +7,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-
 /**
  * Class to create and manage the kiosk
  */
@@ -15,6 +14,11 @@ public class Kiosk {
     public BorderPane kiosk;
     public FlowPane kioskDisplay;
     public Pane kioskButtons;
+    public int state;
+    public TextField a;
+    public TextField b;
+    public Text fullName;
+    public Text cardNum;
     public final String defaultCSS = "-fx-background-color: #404040;" + "-fx-border-color: white;";
     public final String buttonCSS = "-fx-text-fill: rgb(49, 89, 23);\n" +
                                     "-fx-border-color: rgb(49, 89, 23);\n" +
@@ -28,12 +32,16 @@ public class Kiosk {
     public Kiosk() {
         kiosk = new BorderPane();
         kiosk.setPrefSize(400, 250);
+        state = 0;
 
         //Create the kiosk display and add initial welcome message
         kioskDisplay = new FlowPane();
         kioskDisplay.setPrefSize(400, 200);
         kioskDisplay.setStyle("-fx-background-color: #000000;");
-        kioskDisplay.getChildren().add(new CentralManagement().createMessage("\n\t\tWelcome to Siesta Gardens",3));
+        kioskDisplay.getChildren().add(new CentralManagement().createMessage(
+                        "\n\t\t\tWelcome to Siesta Gardens!\n\n\n"+
+                                "\tTo view available timeslots. Press the button below\n"+
+                                "\tYou can cancel anytime by Pressing the cancel button.",3));
 
         //Create the kiosk buttons and add them to GUI
         kioskButtons = new HBox(20);
@@ -54,16 +62,17 @@ public class Kiosk {
     public Button bookingButton() {
         Button bookingButton = new Button("Available Times");
         bookingButton.setStyle(buttonCSS);
-        bookingButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        bookingButton.setOnAction(event -> {
+            if(state == 0) {
+                state = 1;
                 kioskDisplay.getChildren().clear();
-                kioskDisplay.getChildren().add(createMessage("\t\t\t\tAvailable Times\t\t\t\t", false));
-                for(char i=49; i<58;i++) {
-                    kioskDisplay.getChildren().add(createMessage(i+":00  ", true));
+                kioskDisplay.getChildren().add(createMessage("\t\t\t\tAvailable Times\t\t\t\t\n\n\n", false));
+                for (char i = 49; i < 58; i++) {
+                    kioskDisplay.getChildren().add(createMessage(i + ":00  ", true));
                 }
             }
         });
+
         return bookingButton;
     }
 
@@ -74,19 +83,34 @@ public class Kiosk {
     public Button selectButton() {
         Button selectButton = new Button("Select Time");
         selectButton.setStyle(buttonCSS);
-
-        selectButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        selectButton.setOnAction(event -> {
+            if(state == 1) {
                 //book time slot
-                TextField b = new TextField();
-                b.setPrefSize(260,20);
+                a = new TextField();
+                b = new TextField();
+                a.setPrefSize(260, 20);
+                b.setPrefSize(260, 20);
+
+                EventHandler<ActionEvent> submit = new EventHandler<ActionEvent>() {
+                    public void handle(ActionEvent e)
+                    {
+                        kioskDisplay.getChildren().clear();
+                    }
+                };
+
+                // when enter is pressed
+                b.setOnAction(submit);
+                a.setOnAction(submit);
+
                 kioskDisplay.getChildren().clear();
-                kioskDisplay.getChildren().add(createMessage("Full Name", false));
-                kioskDisplay.getChildren().add(b);
+                kioskDisplay.getChildren().add(createMessage("\t\tPlease enter your name and\n\t\tCredit Card information.\t\t\t\t\n\n", false));
+                kioskDisplay.getChildren().add(createMessage("\t\tFull Name", false));
+                kioskDisplay.getChildren().add(a);
                 kioskDisplay.getChildren().add(createMessage("Credit Card Number", false));
+                kioskDisplay.getChildren().add(b);
             }
         });
+
         return selectButton;
     }
 
@@ -100,7 +124,15 @@ public class Kiosk {
         payButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event){
-                //make payment
+                fullName = new Text(a.getText());
+                fullName.setStroke(Color.WHITE);
+                cardNum = new Text(b.getText());
+                cardNum.setStroke(Color.WHITE);
+                Text accepted = new Text("\t\t\tPayment Accepted\n\t\t\t"+fullName.getText()+"\n\t\t\t"+"Token will be dispensed below.");
+                accepted.setStroke(Color.WHITE);
+                Text guestId = new Text("12452");
+                guestId.setStroke(Color.WHITE);
+                kioskDisplay.getChildren().addAll(accepted);
             }
         });
         return payButton;
@@ -116,6 +148,7 @@ public class Kiosk {
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                state = 0;
                 kioskDisplay.getChildren().clear();
                 kioskDisplay.getChildren().add(createMessage("\n\t\t\tWelcome to Siesta Gardens", false));
             }
