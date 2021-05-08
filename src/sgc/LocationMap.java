@@ -66,6 +66,8 @@ public class LocationMap {
         car2.setLayoutX(4*80);
         car2.setLayoutY(2*80);
     }
+
+
 }
 
 
