@@ -33,7 +33,7 @@ public class CentralManagement extends Application {
     public static Pane parkMap;
     public static FlowPane visitorLog;
     public static BorderPane alarmMonitor;
-    public AnimationTimer a;
+    public static AnimationTimer a;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
     public static int i;
     public static int j;

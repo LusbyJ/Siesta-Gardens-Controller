@@ -1,5 +1,6 @@
 package sgc;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -26,6 +27,8 @@ public class AlarmManagement {
     public Pane alarmButtons;
     public int num;
     public int alarmSet = 0;
+    public AnimationTimer mapAnimation;
+
 
     /**
      * Create a pane to monitor the alarm system
@@ -68,6 +71,8 @@ public class AlarmManagement {
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: EMERGENCY", 2));
+                CentralManagement.a.stop();
+
 
             }
         });
@@ -147,6 +152,7 @@ public class AlarmManagement {
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: Idle", 3));
+                CentralManagement.a.start();
             }
         });
         return resetAlarm;
