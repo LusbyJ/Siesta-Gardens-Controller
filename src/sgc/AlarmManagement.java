@@ -8,9 +8,9 @@ import javafx.scene.layout.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.awt.*;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -65,6 +65,12 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("Setting Emergency");
                 alarmSet = 1;
+
+                //Stop the cars and turn them red
+                CentralManagement.a.stop();
+                LocationMap.car_1.setFill(Color.RED);
+                LocationMap.car_2.setFill(Color.RED);
+
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: EMERGENCY", 2));
@@ -144,6 +150,16 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("reset button pressed");
                 alarmSet = 0;
+
+                //Restart the cars and change them back to original colors
+                LocationMap.car_1.setFill(Color.YELLOW);
+                LocationMap.car_2.setFill(Color.YELLOW);
+                //Relocate cars back to start (Maybe take this out and animate the cars returning instead)
+                LocationMap.car1.relocate(CentralManagement.points.get(8).getX(),CentralManagement.points.get(8).getY());
+                CentralManagement.a.start();
+
+
+
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: Idle", 3));

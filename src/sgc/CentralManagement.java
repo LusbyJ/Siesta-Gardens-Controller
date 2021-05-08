@@ -33,7 +33,7 @@ public class CentralManagement extends Application {
     public static Pane parkMap;
     public static FlowPane visitorLog;
     public static BorderPane alarmMonitor;
-    public AnimationTimer a;
+    public static AnimationTimer a;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
     public static int i;
     public static int j;
@@ -66,7 +66,7 @@ public class CentralManagement extends Application {
         parkMap.getChildren().add(createMessage("\nPark Map", 0));
         vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
-       // alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
+        // alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
         return adminView;
     }
 
@@ -103,7 +103,7 @@ public class CentralManagement extends Application {
         //Store each coordinate into the points array list
         while((st = br.readLine()) != null){
             Edge edge = new Edge((int)st.charAt(0)-48,(int)st.charAt(2)-48,
-                                (int)st.charAt(4)-48, (int)st.charAt(6)-48);
+                    (int)st.charAt(4)-48, (int)st.charAt(6)-48);
             createLine(edge);
             points.add(createPoint((int)st.charAt(0)-48, (int)st.charAt(2)-48));
         }
@@ -185,3 +185,4 @@ public class CentralManagement extends Application {
         moveCars();
     }
 }
+
