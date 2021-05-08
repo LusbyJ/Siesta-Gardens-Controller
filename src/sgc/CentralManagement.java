@@ -32,7 +32,7 @@ public class CentralManagement extends Application {
     public static FlowPane vehicles;
     public static Pane parkMap;
     public static FlowPane visitorLog;
-    public static FlowPane alarmMonitor;
+    public static BorderPane alarmMonitor;
     public AnimationTimer a;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
     public static int i;
@@ -66,7 +66,7 @@ public class CentralManagement extends Application {
         parkMap.getChildren().add(createMessage("\nPark Map", 0));
         vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
-        alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
+       // alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
         return adminView;
     }
 
