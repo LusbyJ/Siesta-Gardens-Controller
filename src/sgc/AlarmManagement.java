@@ -28,6 +28,7 @@ public class AlarmManagement {
     public int num;
     public static int alarmSet = 0;
     public AnimationTimer mapAnimation;
+    public int resumeStasus = 0;
 
 
     /**
@@ -46,7 +47,7 @@ public class AlarmManagement {
         alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\nAlarm Status: Idle",3));
 
         alarmButtons = new HBox(50);
-        alarmButtons.getChildren().addAll(megaAlarm(), resetAlarm(), viewExhibit());
+        alarmButtons.getChildren().addAll(resumeButton(), megaAlarm(), resetAlarm(), viewExhibit());
         alarmMonitor.setCenter(alarmDisplay);
         alarmMonitor.setRight(alarmButtons);
     }
@@ -167,5 +168,20 @@ public class AlarmManagement {
         });
         return resetAlarm;
 
+    }
+
+    public Button resumeButton() {
+        Button resumeButton = new Button("Resume Route");
+        resumeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("resume button pressed");
+                //once status is 0 by default.
+                resumeStasus = 1;
+                System.out.println("resume status: "+ resumeStasus);
+            }
+        });
+
+        return resumeButton;
     }
 }
