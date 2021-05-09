@@ -1,5 +1,6 @@
 package sgc;
 
+import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -26,6 +27,8 @@ public class AlarmManagement {
     public Pane alarmButtons;
     public int num;
     public static int alarmSet = 0;
+    public AnimationTimer mapAnimation;
+
 
     /**
      * Create a pane to monitor the alarm system
@@ -68,6 +71,8 @@ public class AlarmManagement {
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: EMERGENCY", 2));
+                //   CentralManagement.a.stop();
+
 
             }
         });
@@ -125,7 +130,7 @@ public class AlarmManagement {
                 newWindow.show();
             }
         });
-    return viewExhibit;
+        return viewExhibit;
     }
 
     /**
@@ -144,16 +149,20 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("reset button pressed");
                 alarmSet = 0;
-                //Reset cars and colors
-                LocationMap.car1.relocate(CentralManagement.points.get(0).getX(),CentralManagement.points.get(0).getY());
-                LocationMap.car2.relocate(CentralManagement.points.get(9).getX(),CentralManagement.points.get(9).getY());
+
+                //Restart the cars and change them back to original colors
                 LocationMap.car_1.setFill(Color.YELLOW);
                 LocationMap.car_2.setFill(Color.YELLOW);
+                //Relocate cars back to start (Maybe take this out and animate the cars returning instead)
+                LocationMap.car1.relocate(CentralManagement.points.get(0).getX(),CentralManagement.points.get(0).getY());
                 CentralManagement.a.start();
+
+
 
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: Idle", 3));
+                //  CentralManagement.a.start();
             }
         });
         return resetAlarm;
