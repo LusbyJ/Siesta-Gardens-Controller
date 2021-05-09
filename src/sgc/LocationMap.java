@@ -65,6 +65,7 @@ public class LocationMap {
         car1.setLayoutY(3*80);
         car2.setLayoutX(4*80);
         car2.setLayoutY(2*80);
+        new VehicleManagement().manageVehicles();
     }
 
 

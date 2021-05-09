@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Driver class to create all objects and initialize the GUI
@@ -29,14 +30,16 @@ public class CentralManagement extends Application {
     public static BorderPane adminView;        //View the admin would have
     public static FlowPane combine;
     public static BorderPane kiosk;
-    public static FlowPane vehicles;
+    public static BorderPane vehicles;
     public static Pane parkMap;
     public static FlowPane visitorLog;
     public static BorderPane alarmMonitor;
     public static AnimationTimer a;
     public static ArrayList<Point2D> points = new ArrayList(); //list to store map coordinates
+    public static ArrayList<Visitor> visitors = new ArrayList();
     public static int i;
     public static int j;
+    public static int idle = 1;
     private static long time = 999_999_999*100;  // determines speed of animation
     private static long lastUpdate = 0;
 
@@ -45,8 +48,8 @@ public class CentralManagement extends Application {
      */
     public BorderPane createAdminView() throws IOException {
         kiosk = new Kiosk().kiosk;
-        vehicles = new VehicleManagement().vehicles;
         parkMap = new LocationMap().parkMap;
+        vehicles = new VehicleManagement().vehicles;
         readMap();
 
         visitorLog = new TokenManagement().visitorLog;
@@ -64,9 +67,7 @@ public class CentralManagement extends Application {
         adminView.setRight(combine);
 
         parkMap.getChildren().add(createMessage("\nPark Map", 0));
-        vehicles.getChildren().add(createMessage("Vehicle Manager:", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
-        // alarmMonitor.getChildren().add(createMessage("Alarm Status\t", 0));
         return adminView;
     }
 
@@ -138,10 +139,19 @@ public class CentralManagement extends Application {
         return new Point2D(x,y);
     }
 
+    public void createVisitors(){
+        for(int x = 0; x < 7;x++){
+            Visitor visitor = new Visitor("Joe","1234",new Random().nextInt(10000));
+            CentralManagement.visitors.add(visitor);
+            VehicleManagement.carPane1.getChildren().add(
+                    new CentralManagement().createMessage("" + CentralManagement.visitors.get(x).getNumID(), 1));
+        }
+    }
+
     /**
      * Animation timer to move cars around the map
      */
-    public void moveCars() {
+    public static void moveCars() {
         i = 0;
         j = 6;
         a = new AnimationTimer() {
@@ -150,6 +160,39 @@ public class CentralManagement extends Application {
                 if (now - lastUpdate >= time) {
                     lastUpdate = now;
 
+                    //idle initially 1, kiosk changes state to 0 when token purchased
+                    //add new guest if kiosk indicates
+                    //move cars
+                    if(idle == 0 && AlarmManagement.alarmSet != 1){
+                        if (Kiosk.newGuest == 1) {
+                            System.out.println("New guest added");
+                            Kiosk.newGuest = 0;
+                        }
+                        //Check where vehicle is by incrementing through points arraylist and move accordingly
+                        if (i < points.size()) {
+                            LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
+                            i++;
+                        } else {
+                            i = 0;
+                        }
+                        if (j < points.size()) {
+                            LocationMap.car2.relocate(points.get(j).getX(), points.get(j).getY());
+                            j++;
+                        } else {
+                            j = 0;
+                        }
+                    }
+
+                    //Clear the log and add again with any updates
+                    visitorLog.getChildren().clear();
+                    for (int x = 0; x < visitors.size(); x++) {
+                        visitorLog.getChildren().add(
+                                new CentralManagement().createMessage("" + visitors.get(x).getNumID(), 1));
+                    }
+
+
+                    //If alarm is indicated by alarm management, change color of cars to red and begin
+                    //moving the cars back to start
                     if(AlarmManagement.alarmSet == 1){
                         LocationMap.car_1.setFill(Color.RED);
                         LocationMap.car_2.setFill(Color.RED);
@@ -175,28 +218,12 @@ public class CentralManagement extends Application {
                         if(j == 6){
                             LocationMap.car2.relocate(points.get(6).getX(),points.get(6).getY());
                         }
+                        //Once both vehicles are back at start, stop the animation, can be resumed
+                        //by hitting the cancel alarm button.
                         if(j == 6 && i == 6){
                             a.stop();
                         }
 
-                    }
-//                    //Stop the cars and turn them red
-//                    LocationMap.car_1.setFill(Color.RED);
-//                    LocationMap.car_2.setFill(Color.RED);
-
-                    else {
-                        if (i < points.size()) {
-                            LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
-                            i++;
-                        } else {
-                            i = 0;
-                        }
-                        if (j < points.size()) {
-                            LocationMap.car2.relocate(points.get(j).getX(), points.get(j).getY());
-                            j++;
-                        } else {
-                            j = 0;
-                        }
                     }
                 }
             }
@@ -216,6 +243,7 @@ public class CentralManagement extends Application {
         Scene scene = new Scene(root, 1000, 800);
         primaryStage.setScene(scene);
         primaryStage.show();
+        createVisitors();
         moveCars();
     }
 }

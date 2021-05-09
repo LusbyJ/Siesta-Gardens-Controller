@@ -7,6 +7,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+
+import java.util.Random;
+
 /**
  * Class to create and manage the kiosk
  */
@@ -19,6 +22,7 @@ public class Kiosk {
     public TextField b;
     public Text fullName;
     public Text cardNum;
+    public static int newGuest;
     public final String defaultCSS = "-fx-background-color: #404040;" + "-fx-border-color: white;";
     public final String buttonCSS = "-fx-text-fill: rgb(49, 89, 23);\n" +
                                     "-fx-border-color: rgb(49, 89, 23);\n" +
@@ -33,6 +37,7 @@ public class Kiosk {
         kiosk = new BorderPane();
         kiosk.setPrefSize(400, 250);
         state = 0;
+        newGuest = 0;
 
         //Create the kiosk display and add initial welcome message
         kioskDisplay = new FlowPane();
@@ -91,17 +96,17 @@ public class Kiosk {
                 a.setPrefSize(260, 20);
                 b.setPrefSize(260, 20);
 
-                EventHandler<ActionEvent> submit = new EventHandler<ActionEvent>() {
-                    public void handle(ActionEvent e)
-                    {
+                EventHandler<ActionEvent> submit = new EventHandler<>() {
+                    public void handle(ActionEvent e) {
                         kioskDisplay.getChildren().clear();
+                        newGuest = 1;
+                        state = 2;
                     }
                 };
 
                 // when enter is pressed
                 b.setOnAction(submit);
                 a.setOnAction(submit);
-
                 kioskDisplay.getChildren().clear();
                 kioskDisplay.getChildren().add(createMessage("\t\tPlease enter your name and\n\t\tCredit Card information.\t\t\t\t\n\n", false));
                 kioskDisplay.getChildren().add(createMessage("\t\tFull Name", false));
@@ -110,7 +115,6 @@ public class Kiosk {
                 kioskDisplay.getChildren().add(b);
             }
         });
-
         return selectButton;
     }
 
@@ -121,18 +125,18 @@ public class Kiosk {
     public Button payButton() {
         Button payButton = new Button("Pay");
         payButton.setStyle(buttonCSS);
-        payButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event){
+        payButton.setOnAction(event -> {
+            if (state == 2) {
                 fullName = new Text(a.getText());
                 fullName.setStroke(Color.WHITE);
                 cardNum = new Text(b.getText());
                 cardNum.setStroke(Color.WHITE);
-                Text accepted = new Text("\t\t\tPayment Accepted\n\t\t\t"+fullName.getText()+"\n\t\t\t"+"Token will be dispensed below.");
+                Text accepted = new Text("\t\t\tPayment Accepted\n\t\t\t" + fullName.getText() + "\n\t\t\t" + "Press the exit button to receive entry token.");
                 accepted.setStroke(Color.WHITE);
-                Text guestId = new Text("12452");
-                guestId.setStroke(Color.WHITE);
                 kioskDisplay.getChildren().addAll(accepted);
+                Visitor visitor = new Visitor(fullName.getText(), cardNum.getText(),new Random().nextInt(10000));
+                CentralManagement.visitors.add(visitor);
+                CentralManagement.idle = 0;
             }
         });
         return payButton;
@@ -143,7 +147,7 @@ public class Kiosk {
      * @return bookingButton
      */
     public Button cancelButton() {
-        Button cancelButton = new Button("Cancel");
+        Button cancelButton = new Button("Exit");
         cancelButton.setStyle(buttonCSS);
         cancelButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
