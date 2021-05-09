@@ -25,7 +25,7 @@ public class AlarmManagement {
     public FlowPane alarmDisplay;
     public Pane alarmButtons;
     public int num;
-    public int alarmSet = 0;
+    public static int alarmSet = 0;
 
     /**
      * Create a pane to monitor the alarm system
@@ -65,12 +65,6 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("Setting Emergency");
                 alarmSet = 1;
-
-                //Stop the cars and turn them red
-                CentralManagement.a.stop();
-                LocationMap.car_1.setFill(Color.RED);
-                LocationMap.car_2.setFill(Color.RED);
-
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: EMERGENCY", 2));
@@ -150,15 +144,12 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("reset button pressed");
                 alarmSet = 0;
-
-                //Restart the cars and change them back to original colors
+                //Reset cars and colors
+                LocationMap.car1.relocate(CentralManagement.points.get(0).getX(),CentralManagement.points.get(0).getY());
+                LocationMap.car2.relocate(CentralManagement.points.get(9).getX(),CentralManagement.points.get(9).getY());
                 LocationMap.car_1.setFill(Color.YELLOW);
                 LocationMap.car_2.setFill(Color.YELLOW);
-                //Relocate cars back to start (Maybe take this out and animate the cars returning instead)
-                LocationMap.car1.relocate(CentralManagement.points.get(8).getX(),CentralManagement.points.get(8).getY());
                 CentralManagement.a.start();
-
-
 
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();

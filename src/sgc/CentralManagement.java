@@ -142,28 +142,62 @@ public class CentralManagement extends Application {
      * Animation timer to move cars around the map
      */
     public void moveCars() {
-        i = 3;
-        j = 9;
+        i = 0;
+        j = 6;
         a = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (now - lastUpdate >= time) {
                     lastUpdate = now;
-                    if (i < points.size()) {
-                        LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
-                        i++;
-                    }
-                    else{
-                        i = 0;
-                    }
-                    if(j < points.size()){
-                        LocationMap.car2.relocate(points.get(j).getX(), points.get(j).getY());
-                        j++;
-                    }
-                    else{
-                        j = 0;
-                    }
 
+                    if(AlarmManagement.alarmSet == 1){
+                        LocationMap.car_1.setFill(Color.RED);
+                        LocationMap.car_2.setFill(Color.RED);
+                        if(i > 0 && i < 6){
+                            LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
+                            i++;
+                        }
+                        else{
+                            LocationMap.car1.relocate(points.get(i).getX(),points.get(i).getY());
+                            i--;
+                        }
+                        if(j >= 6 && j < points.size()){
+                            LocationMap.car2.relocate(points.get(j).getX(),points.get(j).getY());
+                            j--;
+                        }
+                        else{
+                            LocationMap.car2.relocate(points.get(j).getX(),points.get(j).getY());
+                            j++;
+                        }
+                        if(i == 6){
+                            LocationMap.car1.relocate(points.get(6).getX(),points.get(6).getY());
+                        }
+                        if(j == 6){
+                            LocationMap.car2.relocate(points.get(6).getX(),points.get(6).getY());
+                        }
+                        if(j == 6 && i == 6){
+                            a.stop();
+                        }
+
+                    }
+//                    //Stop the cars and turn them red
+//                    LocationMap.car_1.setFill(Color.RED);
+//                    LocationMap.car_2.setFill(Color.RED);
+
+                    else {
+                        if (i < points.size()) {
+                            LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
+                            i++;
+                        } else {
+                            i = 0;
+                        }
+                        if (j < points.size()) {
+                            LocationMap.car2.relocate(points.get(j).getX(), points.get(j).getY());
+                            j++;
+                        } else {
+                            j = 0;
+                        }
+                    }
                 }
             }
         };
