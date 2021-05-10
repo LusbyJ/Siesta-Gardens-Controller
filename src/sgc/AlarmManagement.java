@@ -153,6 +153,7 @@ public class AlarmManagement {
                 alarmSet = 0;
                 CentralManagement.resetState = 1;
                 LocationMap.exhibit.setFill(Color.BLUE);
+                CentralManagement.a.start();
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: Idle", 3));
