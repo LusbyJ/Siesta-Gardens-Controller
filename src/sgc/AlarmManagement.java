@@ -47,7 +47,7 @@ public class AlarmManagement {
         alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\nAlarm Status: Idle",3));
 
         alarmButtons = new HBox(50);
-        alarmButtons.getChildren().addAll(resumeButton(), megaAlarm(), resetAlarm(), viewExhibit());
+        alarmButtons.getChildren().addAll(resumeButton(), megaAlarm(), resetAlarm(), viewExhibit(), breakoutButton());
         alarmMonitor.setCenter(alarmDisplay);
         alarmMonitor.setRight(alarmButtons);
     }
@@ -101,7 +101,7 @@ public class AlarmManagement {
                     if(alarmSet == 0) {
                         stream = new FileInputStream("src/sgc/dionExi1.gif");
                     }
-                    if(alarmSet == 1){
+                    if(alarmSet == 1 || alarmSet == 2){
                         stream = new FileInputStream("src/sgc/dinoEscape.gif");
                     }
                 } catch (FileNotFoundException e) {
@@ -154,6 +154,7 @@ public class AlarmManagement {
                 //Restart the cars and change them back to original colors
                 LocationMap.car_1.setFill(Color.YELLOW);
                 LocationMap.car_2.setFill(Color.YELLOW);
+                LocationMap.exhibit.setFill(Color.RED);
                 //Relocate cars back to start (Maybe take this out and animate the cars returning instead)
                 LocationMap.car1.relocate(CentralManagement.points.get(0).getX(),CentralManagement.points.get(0).getY());
                 CentralManagement.a.start();
@@ -179,9 +180,31 @@ public class AlarmManagement {
                 //once status is 0 by default.
                 resumeStasus = 1;
                 System.out.println("resume status: "+ resumeStasus);
+
+
             }
         });
-
         return resumeButton;
+    }
+
+    public Button breakoutButton() {
+        Button breakoutButton = new Button("[RELEASE DINO]");
+        breakoutButton.setStyle("-fx-text-fill: rgb(49, 89, 23);\n" +
+                "-fx-border-color: rgb(49, 89, 23);\n" +
+                "-fx-border-radius: 5;\n" +
+                "-fx-padding: 3 6 6 6;");
+
+       // breakoutButton.setVisible(false);
+
+
+        breakoutButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("Dino Breakout Started");
+                alarmSet = 2;
+                LocationMap.exhibit.setFill(Color.ORANGE);
+            }
+        });
+        return breakoutButton;
     }
 }

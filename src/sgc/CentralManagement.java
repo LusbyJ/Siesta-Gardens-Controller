@@ -187,7 +187,7 @@ public class CentralManagement extends Application {
                     visitorLog.getChildren().clear();
                     for (int x = 0; x < visitors.size(); x++) {
                         visitorLog.getChildren().add(
-                                new CentralManagement().createMessage("" + visitors.get(x).getNumID(), 1));
+                                new CentralManagement().createMessage(" " + visitors.get(x).getNumID(), 1));
                     }
 
 
