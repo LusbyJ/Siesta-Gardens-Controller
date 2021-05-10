@@ -35,7 +35,6 @@ public class AlarmManagement {
      * Create a pane to monitor the alarm system
      */
     public AlarmManagement() throws FileNotFoundException {
-        num = 1;
         alarmMonitor = new BorderPane();
         alarmMonitor.setPrefSize(800, 80);
         alarmMonitor.setStyle("-fx-background-color: #6495ed;");
@@ -201,6 +200,9 @@ public class AlarmManagement {
                 System.out.println("Dino Breakout Started");
                 alarmSet = 2;
                 LocationMap.exhibit.setFill(Color.ORANGE);
+                alarmDisplay.getChildren().clear();
+                alarmDisplay.getChildren().add(
+                        new CentralManagement().createMessage("\t\t\nAlarm Status: ERROR AT DINO EXHIBIT, CHECK FEED", 2));
             }
         });
         return breakoutButton;
