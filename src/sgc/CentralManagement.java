@@ -66,7 +66,7 @@ public class CentralManagement extends Application {
         adminView.setLeft(parkMap);
         adminView.setRight(combine);
 
-        parkMap.getChildren().add(createMessage("\nPark Map", 0));
+        parkMap.getChildren().add(createMessage("\nPark Map: ", 0));
         visitorLog.getChildren().add(createMessage("Current Visitors:\t", 0));
         return adminView;
     }
@@ -185,11 +185,19 @@ public class CentralManagement extends Application {
 
                     //Clear the log and add again with any updates
                     visitorLog.getChildren().clear();
+                    //shows Current Visitors each time one is added
+                    visitorLog.getChildren().add(
+                            new CentralManagement().createMessage("Current Visitors:\t", 0));
                     for (int x = 0; x < visitors.size(); x++) {
                         visitorLog.getChildren().add(
                                 new CentralManagement().createMessage(" " + visitors.get(x).getNumID(), 1));
                     }
-
+                    //------------------------
+                    //if(AlarmManagement.alarmSet == 2) {
+                    //    parkMap.getChildren().add(
+                    //            new CentralManagement().createMessage("\nPark Map: ERROR AT DINO EXHIBIT, CHECK FEED", 2));
+                    //}
+                    //--------------------------
 
                     //If alarm is indicated by alarm management, change color of cars to red and begin
                     //moving the cars back to start
@@ -223,7 +231,6 @@ public class CentralManagement extends Application {
                         if(j == 6 && i == 6){
                             a.stop();
                         }
-
                     }
                 }
             }
