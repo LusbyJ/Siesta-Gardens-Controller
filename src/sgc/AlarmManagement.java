@@ -69,6 +69,7 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("Setting Emergency");
                 alarmSet = 1;
+                LocationMap.exhibit.setFill(Color.RED);
                 System.out.println("alarmSet: "+ alarmSet);
                 alarmDisplay.getChildren().clear();
                 alarmDisplay.getChildren().add(new CentralManagement().createMessage("\t\t\nAlarm Status: EMERGENCY", 2));
@@ -151,7 +152,7 @@ public class AlarmManagement {
                 System.out.println("reset button pressed");
                 alarmSet = 0;
                 CentralManagement.resetState = 1;
-                LocationMap.exhibit.setFill(Color.RED);
+                LocationMap.exhibit.setFill(Color.BLUE);
                 CentralManagement.a.start();
 
 
@@ -168,6 +169,11 @@ public class AlarmManagement {
 
     public Button resumeButton() {
         Button resumeButton = new Button("Resume Route");
+        resumeButton.setStyle("-fx-text-fill: rgb(49, 89, 23);\n" +
+                "-fx-border-color: rgb(49, 89, 23);\n" +
+                "-fx-border-radius: 5;\n" +
+                "-fx-padding: 3 6 6 6;");
+
         resumeButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

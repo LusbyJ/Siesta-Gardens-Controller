@@ -38,7 +38,7 @@ public class LocationMap {
         startPosition.relocate((4 * 80) + 10, (2 * 80) - 10);
 
         //Create circle and label to indicate exhibit
-        exhibit = new Circle((1 * 80), (3 * 80), 15, Color.RED);
+        exhibit = new Circle((1 * 80), (3 * 80), 15, Color.BLUE);
         Text exPosition = new Text("Exhibit");
         exPosition.setStroke(Color.WHITE);
         exPosition.relocate((1 * 80) + 10, (3 * 80) - 10);
