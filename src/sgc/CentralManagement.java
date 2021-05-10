@@ -40,6 +40,7 @@ public class CentralManagement extends Application {
     public static int i;
     public static int j;
     public static int idle = 1;
+    public static int resetState = 0;
     private static long time = 999_999_999*100;  // determines speed of animation
     private static long lastUpdate = 0;
 
@@ -143,8 +144,6 @@ public class CentralManagement extends Application {
         for(int x = 0; x < 7;x++){
             Visitor visitor = new Visitor("Joe","1234",new Random().nextInt(10000));
             CentralManagement.visitors.add(visitor);
-            VehicleManagement.carPane1.getChildren().add(
-                    new CentralManagement().createMessage("" + CentralManagement.visitors.get(x).getNumID(), 1));
         }
     }
 
@@ -159,7 +158,13 @@ public class CentralManagement extends Application {
             public void handle(long now) {
                 if (now - lastUpdate >= time) {
                     lastUpdate = now;
-
+                    if(resetState == 1){
+                        i = 0;
+                        LocationMap.car_1.setFill(Color.YELLOW);
+                        LocationMap.car_2.setFill(Color.YELLOW);
+                        LocationMap.car1.relocate(80,240);
+                        resetState = 0;
+                    }
                     //idle initially 1, kiosk changes state to 0 when token purchased
                     //add new guest if kiosk indicates
                     //move cars

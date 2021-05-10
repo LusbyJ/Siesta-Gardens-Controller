@@ -150,13 +150,8 @@ public class AlarmManagement {
             public void handle(ActionEvent event) {
                 System.out.println("reset button pressed");
                 alarmSet = 0;
-
-                //Restart the cars and change them back to original colors
-                LocationMap.car_1.setFill(Color.YELLOW);
-                LocationMap.car_2.setFill(Color.YELLOW);
+                CentralManagement.resetState = 1;
                 LocationMap.exhibit.setFill(Color.RED);
-                //Relocate cars back to start (Maybe take this out and animate the cars returning instead)
-                LocationMap.car1.relocate(CentralManagement.points.get(0).getX(),CentralManagement.points.get(0).getY());
                 CentralManagement.a.start();
 
 
