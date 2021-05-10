@@ -124,6 +124,7 @@ public class CentralManagement extends Application {
         double endY = edge.getEndY()*80;
         Line line = new Line(startX, startY, endX, endY);
         line.setStroke(Color.WHITE);
+        line.setStrokeWidth(3);
         parkMap.getChildren().add(line);
     }
 
@@ -197,11 +198,19 @@ public class CentralManagement extends Application {
                         visitorLog.getChildren().add(
                                 new CentralManagement().createMessage(" " + visitors.get(x).getNumID(), 1));
                     }
+                    //once everyone has left the park, the log is cleared.
+                    if(visitors.isEmpty()){
+                        visitorLog.getChildren().clear();
+                        visitorLog.getChildren().add(
+                                new CentralManagement().createMessage("Current Visitors:\t", 0));
+                    }
                     //------------------------
-                    //if(AlarmManagement.alarmSet == 2) {
-                    //    parkMap.getChildren().add(
-                    //            new CentralManagement().createMessage("\nPark Map: ERROR AT DINO EXHIBIT, CHECK FEED", 2));
-                    //}
+                    /**
+                    if(AlarmManagement.alarmSet == 2) {
+                        visitorLog.getChildren().add(
+                                new CentralManagement().createMessage("\nPark Map: ERROR AT DINO EXHIBIT, CHECK FEED", 2));
+                    }
+                     */
                     //--------------------------
 
                     //If alarm is indicated by alarm management, change color of cars to red and begin
@@ -235,6 +244,7 @@ public class CentralManagement extends Application {
                         //by hitting the cancel alarm button.
                         if(j == 6 && i == 6){
                             a.stop();
+                            visitors.clear();
                         }
                     }
                 }
