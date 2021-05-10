@@ -39,8 +39,9 @@ public class CentralManagement extends Application {
     public static ArrayList<Visitor> visitors = new ArrayList();
     public static int i;
     public static int j;
-    public static int idle = 1;
-    public static int resetState = 0;
+    public static int pause = 0;
+    public static int idle = 1; //handles state of animation
+    public static int resetState = 0; //handles reset state affecting vehicle locations
     private static long time = 999_999_999*100;  // determines speed of animation
     private static long lastUpdate = 0;
 
@@ -177,9 +178,14 @@ public class CentralManagement extends Application {
                         //Check where vehicle is by incrementing through points arraylist and move accordingly
                         if (i < points.size()) {
                             LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
+                            if(pause == 1 || i == 6){
+                                a.stop();
+                                pause = 0;
+                            }
                             i++;
                         } else {
                             i = 0;
+                            pause = 1;
                         }
                         if (j < points.size()) {
                             LocationMap.car2.relocate(points.get(j).getX(), points.get(j).getY());
