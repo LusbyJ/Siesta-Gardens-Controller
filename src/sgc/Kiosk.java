@@ -1,13 +1,21 @@
 package sgc;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Random;
 
 /**
@@ -105,8 +113,10 @@ public class Kiosk {
                 };
 
                 // when enter is pressed
-                b.setOnAction(submit);
                 a.setOnAction(submit);
+                b.setOnAction(submit);
+
+
                 kioskDisplay.getChildren().clear();
                 kioskDisplay.getChildren().add(createMessage("\t\tPlease enter your name and\n\t\tCredit Card information.\t\t\t\t\n\n", false));
                 kioskDisplay.getChildren().add(createMessage("\t\tFull Name", false));
@@ -126,17 +136,46 @@ public class Kiosk {
         Button payButton = new Button("Pay");
         payButton.setStyle(buttonCSS);
         payButton.setOnAction(event -> {
+
             if (state == 2) {
                 fullName = new Text(a.getText());
                 fullName.setStroke(Color.WHITE);
                 cardNum = new Text(b.getText());
                 cardNum.setStroke(Color.WHITE);
-                Text accepted = new Text("\t\t\tPayment Accepted\n\t\t\t" + fullName.getText() + "\n\t\t\t" + "Press the exit button to receive entry token.");
-                accepted.setStroke(Color.WHITE);
-                kioskDisplay.getChildren().addAll(accepted);
-                Visitor visitor = new Visitor(fullName.getText(), cardNum.getText(),new Random().nextInt(10000));
-                CentralManagement.visitors.add(visitor);
-                CentralManagement.idle = 0;
+                InputStream stream = null;
+                if(fullName.getText().equals("Dennis Nedry")){
+                    try {
+                        stream = new FileInputStream("src/sgc/dinoEscape.gif");
+                    } catch (FileNotFoundException fileNotFoundException) {
+                        fileNotFoundException.printStackTrace();
+                    }
+                    Image image = new Image(stream);
+
+                    ImageView imageView = new ImageView();
+                    imageView.setImage(image);
+                    imageView.setX(10);
+                    imageView.setY(10);
+                    imageView.setFitWidth(1000);
+                    imageView.setPreserveRatio(true);
+                    Group group = new Group(imageView);
+
+                    //StackPane secondaryLayout = new StackPane();
+                    Scene secondScene = new Scene(group,1020 , 600);
+                    Stage newWindow = new Stage();
+
+                    newWindow.setTitle("Tyrannosaurus Rex Exhibit");
+                    newWindow.setScene(secondScene);
+
+                    newWindow.show();
+                }
+                else {
+                    Text accepted = new Text("\t\t\tPayment Accepted\n\t\t\t" + fullName.getText() + "\n\t\t\t" + "Press the exit button to receive entry token.");
+                    accepted.setStroke(Color.WHITE);
+                    kioskDisplay.getChildren().addAll(accepted);
+                    Visitor visitor = new Visitor(fullName.getText(), cardNum.getText(), new Random().nextInt(10000));
+                    CentralManagement.visitors.add(visitor);
+                    CentralManagement.idle = 0;
+                }
             }
         });
         return payButton;
