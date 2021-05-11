@@ -57,5 +57,16 @@ public class VehicleManagement {
                 }
             }
         });
+        LocationMap.car1.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent t) {
+                VehicleManagement.carPane1.getChildren().clear();
+                for (int x = 0; x < CentralManagement.visitors.size(); ++x) {
+                    VehicleManagement.carPane1.getChildren().add(
+                            new CentralManagement().createMessage("" + CentralManagement.visitors.get(x).getNumID(), 1));
+                }
+            }
+        });
     }
 }

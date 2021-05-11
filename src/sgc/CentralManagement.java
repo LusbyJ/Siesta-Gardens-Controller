@@ -180,6 +180,13 @@ public class CentralManagement extends Application {
                             LocationMap.car1.relocate(points.get(i).getX(), points.get(i).getY());
                             if(pause == 1 || i == 6){
                                 a.stop();
+                                if(i == 6){
+                                    VehicleManagement.carPane1.getChildren().clear();
+                                }
+                                if(j == 6){
+                                    VehicleManagement.carPane2.getChildren().clear();
+                                }
+                                visitors.clear();
                                 pause = 0;
                             }
                             i++;
@@ -250,6 +257,8 @@ public class CentralManagement extends Application {
                         //by hitting the cancel alarm button.
                         if(j == 6 && i == 6){
                             a.stop();
+                            VehicleManagement.carPane1.getChildren().clear();
+                            VehicleManagement.carPane2.getChildren().clear();
                             visitors.clear();
                         }
                     }
