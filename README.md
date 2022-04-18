@@ -1,1 +1,14 @@
-## SGC
+# Siesta Garden's Controller
+The Siesta Garden's Controller (SGC) is a mock control/monitoring program for a theoretical theme park.  The park hosts a one-of-a-kind dinosaur exhibit and the manager needs a reliable monitoring and control station to ensure the safety of his park guests.  This project was the final project for CS 460 (Software Engineering).  The project followed strict guidelines throughout entire software design lifecycle.  First, project requirements were described in a Requirement’s Definition Document (RDD).  Once the RDD was approved, a Software Requirement Specifications document (SRS) was developed and then eventually the Software Architecture Design document (SAD).  At each stage critiques and revisions were made based on customer/(Professor) ideas and input.   
+
+## System Requirements
+The SGC was programmed using Java 15 and IntelliJ
+Entry Point for Program - CentralManagement.java
+
+## About the Controller
+The SGC functions in a way that it will display and control multiple different systems throughout the park.  The controller is divided into multiple panes, each representing a different component within the park.
+
+The top pane displays current alarm status and contains various buttons that the manager can use to control different components within the park.  Below the alarm/control panel is a larger pain displaying a map of the park as well as the 2 vehicles that transport guests to and from the exhibit.  Cars travel in a preset path around the park, stopping once at the exhibit to allow guests time to view the dinosaur. Below the park map is a pane that will display a unique token code of guests currently at the park so nobody will go unaccounted for.  On the right side of the controller is 2 panes, one showing current visitors in each car, and the other showing a mockup of a kiosk that visitors will use to purchase tickets to see the dinosaur.
+
+## How to Use the Controller
+Upon program start up visitors are already at the park and their unique code is displayed in the visitor panel.  Interact with the Kiosk pane to purchase a ticket and initiate the main loop of park operations.  The cars will begin to move around the park stopping at the start location and exhibit.  Each time the cars stop, they can be restarted by clicking the resume route button in the control/monitor pane.  Once the user purchases a ticket, they can then click on a car located at the start to board the vehicle.  The user’s ID is then displayed on the cars list as well as current visitor list.  Once this car makes its full trip around the park, the user is exited from the park and their ID removed from the visitor and car lists.  If at any point an alarm is triggered you can view the surveillance feed of the exhibit by clicking the view exhibit button in the control pain.  If for some reason the manager wanted to release the dinosaur that can also be done from the control pane.  Releasing the dinosaur will cause the alarm to be triggered.  
